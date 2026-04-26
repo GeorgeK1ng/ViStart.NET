@@ -120,10 +120,7 @@
     <EmbeddedResource Include="Resources\layout.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Languages\english.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Languages\czech.json">
+    <None Include="Languages\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="app.config" />

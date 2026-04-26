@@ -93,8 +93,7 @@ Selected values are persisted in `settings.json`.
 
 ### Language Support
 Runtime UI language switching is supported via JSON language packs in `Languages/*.json`
-(default `english.json`; included also `czech.json`). Legacy XML language files from the original VB6 repository are converted
-to JSON during CI packaging and bundled into release artifacts.
+(default `english.json`; includes `czech`, `brazilian`, `chinesesimplified`, `dutch`, `finnish`, `french`, `german`, `hebrew`, `italian`, `korean`, `polish`, `romanian`, `russian`, `spanish`, `thai`, `turkish`). Language packs are maintained directly as JSON files in this repository (no XML conversion in CI).
 
 ## Building
 
