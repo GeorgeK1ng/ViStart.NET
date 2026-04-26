@@ -16,7 +16,7 @@ namespace ViStart.Core
 
             string langCode = AppSettings.Instance.CurrentLanguage;
             if (string.IsNullOrEmpty(langCode))
-                langCode = "en";
+                langCode = "english";
 
             string langFile = FindLanguageFile(langCode);
             if (string.IsNullOrEmpty(langFile) || !File.Exists(langFile))
@@ -60,7 +60,7 @@ namespace ViStart.Core
             }
 
             if (langs.Count == 0)
-                langs.Add("en");
+                langs.Add("english");
 
             return langs.OrderBy(l => l);
         }

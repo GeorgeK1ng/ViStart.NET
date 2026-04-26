@@ -93,7 +93,7 @@ Selected values are persisted in `settings.json`.
 
 ### Language Support
 Runtime UI language switching is supported via JSON language packs in `Languages/*.json`
-(default `en.json`). Legacy XML language files from the original VB6 repository are converted
+(default `english.json`). Legacy XML language files from the original VB6 repository are converted
 to JSON during CI packaging and bundled into release artifacts.
 
 ## Building

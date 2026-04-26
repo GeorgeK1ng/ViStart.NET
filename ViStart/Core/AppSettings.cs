@@ -55,7 +55,7 @@ namespace ViStart.Core
             // Set defaults
             CurrentSkin = string.Empty;
             CurrentOrb = string.Empty;
-            CurrentLanguage = "en";
+            CurrentLanguage = "english";
             ShowUserPicture = true;
             ShowProgramsFirst = false;
             CatchLeftWindowsKey = true;
