@@ -15,9 +15,11 @@ jobs:
           - platform: x86
             configuration: Release
             output_path: ViStart/bin/Release/
+            make_installer: true
           - platform: x64
             configuration: Release
             output_path: ViStart/bin/x64/Release/
+            make_installer: false
 
     steps:
       - name: Checkout
@@ -25,7 +27,6 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-
 
       - name: Verify target framework (XP-compatible)
         shell: powershell
@@ -36,17 +37,49 @@ jobs:
             throw "Expected TargetFrameworkVersion v4.0, got '$tfm'."
           }
 
-      - name: Show MSBuild version
-        shell: powershell
-        run: |
-          msbuild -version
-          Write-Host "Building a C# .NET Framework 4.0 project does not require VS2010 C++ toolsets."
-
       - name: Build solution
         run: msbuild ViStart.sln /t:Restore,Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /m /verbosity:minimal
+
+      - name: Prepare release payload
+        shell: powershell
+        run: |
+          New-Item -ItemType Directory -Path artifacts/dist/app -Force | Out-Null
+          Copy-Item "${{ matrix.output_path }}*" "artifacts/dist/app" -Recurse -Force
+          Copy-Item "ViStart/Resources" "artifacts/dist/app/Resources" -Recurse -Force
+
+      - name: Download legacy skins/languages from original ViStart repo
+        if: matrix.make_installer == true
+        shell: powershell
+        run: |
+          $zip = "artifacts/legacy-vistart.zip"
+          Invoke-WebRequest -Uri "https://codeload.github.com/lee-soft/ViStart/zip/refs/heads/main" -OutFile $zip
+          Expand-Archive -Path $zip -DestinationPath artifacts -Force
+          Copy-Item "artifacts/ViStart-main/Languages" "artifacts/dist/Languages" -Recurse -Force
+          Copy-Item "artifacts/ViStart-main/Skins" "artifacts/dist/Skins" -Recurse -Force
+
+      - name: Install Inno Setup 5
+        if: matrix.make_installer == true
+        shell: powershell
+        run: choco install innosetup --version=5.6.1 -y --no-progress
+
+      - name: Build installer (Inno Setup 5)
+        if: matrix.make_installer == true
+        shell: powershell
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" "installer/ViStart.iss"
 
       - name: Upload build output
         uses: actions/upload-artifact@v4
         with:
           name: ViStart-${{ matrix.platform }}-${{ matrix.configuration }}
-          path: ${{ matrix.output_path }}
+          path: artifacts/dist/app/
+
+      - name: Upload installer payload
+        if: matrix.make_installer == true
+        uses: actions/upload-artifact@v4
+        with:
+          name: ViStart-Installer-and-Assets
+          path: |
+            artifacts/installer/
+            artifacts/dist/Languages/
+            artifacts/dist/Skins/
