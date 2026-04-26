@@ -30,6 +30,8 @@ Source: "..\artifacts\dist\Skins\*"; DestDir: "{userappdata}\Lee-Soft.com\ViStar
 Source: "..\artifacts\dist\Languages\*"; DestDir: "{app}\Languages"; Flags: recursesubdirs createallsubdirs ignoreversion
 ; Legacy orbs from original VB6 repository
 Source: "..\artifacts\dist\Orbs\*"; DestDir: "{userappdata}\Lee-Soft.com\ViStart\_orbs"; Flags: recursesubdirs createallsubdirs ignoreversion skipifsourcedoesntexist
+; Legacy rollover assets from original VB6 repository
+Source: "..\artifacts\dist\Rollover\*"; DestDir: "{userappdata}\Lee-Soft.com\ViStart\_orbs\rollover"; Flags: recursesubdirs createallsubdirs ignoreversion skipifsourcedoesntexist
 
 [Icons]
 Name: "{group}\ViStart"; Filename: "{app}\{#MyAppExeName}"

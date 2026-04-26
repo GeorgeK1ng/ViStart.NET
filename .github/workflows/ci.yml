@@ -47,18 +47,48 @@ jobs:
           Copy-Item "${{ matrix.output_path }}*" "artifacts/dist/app" -Recurse -Force
           Copy-Item "ViStart/Resources" "artifacts/dist/app/Resources" -Recurse -Force
 
-      - name: Download legacy skins/languages from original ViStart repo
+      - name: Download legacy assets from original ViStart repo
         if: matrix.make_installer == true
         shell: powershell
         run: |
           $zip = "artifacts/legacy-vistart.zip"
           Invoke-WebRequest -Uri "https://codeload.github.com/lee-soft/ViStart/zip/refs/heads/main" -OutFile $zip
           Expand-Archive -Path $zip -DestinationPath artifacts -Force
-          Copy-Item "artifacts/ViStart-main/Languages" "artifacts/dist/Languages" -Recurse -Force
-          Copy-Item "artifacts/ViStart-main/Skins" "artifacts/dist/Skins" -Recurse -Force
-          if (Test-Path "artifacts/ViStart-main/Orbs") {
-            Copy-Item "artifacts/ViStart-main/Orbs" "artifacts/dist/Orbs" -Recurse -Force
+
+          $legacyRoot = "artifacts/ViStart-main"
+          $folderMap = @{
+            Languages = @("Languages", "languages")
+            Skins     = @("Skins", "skins")
+            Orbs      = @("Orbs", "orbs")
+            Rollover  = @("Rollover", "rollover")
           }
+
+          foreach ($target in $folderMap.Keys) {
+            foreach ($candidate in $folderMap[$target]) {
+              $sourcePath = Join-Path $legacyRoot $candidate
+              if (Test-Path $sourcePath) {
+                Copy-Item $sourcePath (Join-Path "artifacts/dist" $target) -Recurse -Force
+                break
+              }
+            }
+          }
+
+      - name: Build portable zip release
+        if: matrix.make_installer == true
+        shell: powershell
+        run: |
+          $portableRoot = "artifacts/portable/ViStart"
+          New-Item -ItemType Directory -Path $portableRoot -Force | Out-Null
+          Copy-Item "artifacts/dist/app/*" $portableRoot -Recurse -Force
+
+          foreach ($folder in @("Languages", "Skins", "Orbs", "Rollover")) {
+            $src = Join-Path "artifacts/dist" $folder
+            if (Test-Path $src) {
+              Copy-Item $src (Join-Path $portableRoot $folder) -Recurse -Force
+            }
+          }
+
+          Compress-Archive -Path "$portableRoot/*" -DestinationPath "artifacts/portable/ViStart-Portable.zip" -Force
 
       - name: Install Inno Setup 5
         if: matrix.make_installer == true
@@ -84,6 +114,8 @@ jobs:
           name: ViStart-Installer-and-Assets
           path: |
             artifacts/installer/
+            artifacts/portable/ViStart-Portable.zip
             artifacts/dist/Languages/
             artifacts/dist/Skins/
             artifacts/dist/Orbs/
+            artifacts/dist/Rollover/

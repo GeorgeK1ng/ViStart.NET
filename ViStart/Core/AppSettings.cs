@@ -110,9 +110,17 @@ namespace ViStart.Core
         {
             if (!string.IsNullOrEmpty(CurrentSkin))
             {
-                string skinPath = Path.Combine(appDataPath, "_skins", CurrentSkin);
-                if (Directory.Exists(skinPath))
-                    return skinPath;
+                string appDataSkinPath = Path.Combine(appDataPath, "_skins", CurrentSkin);
+                if (Directory.Exists(appDataSkinPath))
+                    return appDataSkinPath;
+
+                string localSkinsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Skins", CurrentSkin);
+                if (Directory.Exists(localSkinsPath))
+                    return localSkinsPath;
+
+                string localSkinsLowerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "skins", CurrentSkin);
+                if (Directory.Exists(localSkinsLowerPath))
+                    return localSkinsLowerPath;
             }
 
             // Default resources in application directory
@@ -123,9 +131,17 @@ namespace ViStart.Core
         {
             if (!string.IsNullOrEmpty(CurrentOrb))
             {
-                string orbPath = Path.Combine(appDataPath, "_orbs", CurrentOrb);
-                if (File.Exists(orbPath))
-                    return orbPath;
+                string appDataOrbPath = Path.Combine(appDataPath, "_orbs", CurrentOrb);
+                if (File.Exists(appDataOrbPath))
+                    return appDataOrbPath;
+
+                string localOrbsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Orbs", CurrentOrb);
+                if (File.Exists(localOrbsPath))
+                    return localOrbsPath;
+
+                string localOrbsLowerPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "orbs", CurrentOrb);
+                if (File.Exists(localOrbsLowerPath))
+                    return localOrbsLowerPath;
             }
 
             // Default orb
