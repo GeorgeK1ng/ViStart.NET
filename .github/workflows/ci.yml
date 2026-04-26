@@ -93,12 +93,15 @@ jobs:
       - name: Install Inno Setup 5
         if: matrix.make_installer == true
         shell: powershell
-        run: choco install innosetup --version=5.6.1 -y --no-progress
+        run: choco install innosetup --version=5.6.1 --allow-downgrade --force -y --no-progress
 
       - name: Build installer (Inno Setup 5)
         if: matrix.make_installer == true
         shell: powershell
         run: |
+          if (-not (Test-Path "C:\Program Files (x86)\Inno Setup 5\ISCC.exe")) {
+            throw "Inno Setup 5 was not found after installation step."
+          }
           & "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" "installer/ViStart.iss"
 
       - name: Upload build output
