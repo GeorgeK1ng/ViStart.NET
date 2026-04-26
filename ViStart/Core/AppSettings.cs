@@ -37,6 +37,7 @@ namespace ViStart.Core
         // General Settings
         public string CurrentSkin { get; set; }
         public string CurrentOrb { get; set; }
+        public string CurrentLanguage { get; set; }
         public bool ShowUserPicture { get; set; }
         public bool ShowProgramsFirst { get; set; }
         public bool CatchLeftWindowsKey { get; set; }
@@ -54,6 +55,7 @@ namespace ViStart.Core
             // Set defaults
             CurrentSkin = string.Empty;
             CurrentOrb = string.Empty;
+            CurrentLanguage = "en";
             ShowUserPicture = true;
             ShowProgramsFirst = false;
             CatchLeftWindowsKey = true;

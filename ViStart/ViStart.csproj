@@ -73,6 +73,7 @@
     <Compile Include="Core\ThemeManager.cs" />
     <Compile Include="Core\IconCache.cs" />
     <Compile Include="Core\StartMenuIndexer.cs" />
+    <Compile Include="Core\LanguageManager.cs" />
     <Compile Include="Data\ProgramItem.cs" />
     <Compile Include="Data\ProgramDatabase.cs" />
     <Compile Include="Data\NavigationItem.cs" />
@@ -119,6 +120,9 @@
     <EmbeddedResource Include="Resources\layout.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Languages\en.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>

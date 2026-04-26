@@ -48,6 +48,9 @@ jobs:
           New-Item -ItemType Directory -Path artifacts/dist/app -Force | Out-Null
           Copy-Item "${{ matrix.output_path }}*" "artifacts/dist/app" -Recurse -Force
           Copy-Item "ViStart/Resources" "artifacts/dist/app/Resources" -Recurse -Force
+          if (Test-Path "ViStart/Languages") {
+            Copy-Item "ViStart/Languages" "artifacts/dist/Languages" -Recurse -Force
+          }
 
       - name: Download legacy assets from original ViStart repo
         shell: powershell
@@ -71,6 +74,41 @@ jobs:
                 Copy-Item $sourcePath (Join-Path "artifacts/dist" $target) -Recurse -Force
                 break
               }
+            }
+          }
+
+
+      - name: Convert legacy language XML files to JSON
+        shell: powershell
+        run: |
+          $languagesRoot = "artifacts/dist/Languages"
+          if (-not (Test-Path $languagesRoot)) { exit 0 }
+
+          Get-ChildItem -Path $languagesRoot -Filter *.xml -Recurse | ForEach-Object {
+            try {
+              [xml]$xml = Get-Content $_.FullName
+              $map = @{}
+
+              $xml.SelectNodes("//*[@id or @key or @name]") | ForEach-Object {
+                $k = $_.GetAttribute("id")
+                if ([string]::IsNullOrEmpty($k)) { $k = $_.GetAttribute("key") }
+                if ([string]::IsNullOrEmpty($k)) { $k = $_.GetAttribute("name") }
+
+                $v = $_.GetAttribute("value")
+                if ([string]::IsNullOrEmpty($v)) { $v = $_.InnerText }
+
+                if (-not [string]::IsNullOrEmpty($k) -and -not [string]::IsNullOrEmpty($v)) {
+                  $map[$k] = $v
+                }
+              }
+
+              if ($map.Count -gt 0) {
+                $jsonPath = [System.IO.Path]::ChangeExtension($_.FullName, ".json")
+                ($map | ConvertTo-Json -Depth 5) | Out-File -FilePath $jsonPath -Encoding utf8
+              }
+            }
+            catch {
+              Write-Host "Skipping language conversion for $($_.FullName)"
             }
           }
 

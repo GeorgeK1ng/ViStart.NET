@@ -229,8 +229,8 @@ namespace ViStart.UI
         {
             var menu = new ContextMenuStrip();
 
-            var skinsMenu = new ToolStripMenuItem("Skins");
-            skinsMenu.DropDownItems.Add("Default", null, (s, a) =>
+            var skinsMenu = new ToolStripMenuItem(LanguageManager.T("menu.skins", "Skins"));
+            skinsMenu.DropDownItems.Add(LanguageManager.T("menu.default", "Default"), null, (s, a) =>
             {
                 AppSettings.Instance.CurrentSkin = string.Empty;
                 ApplyAppearanceChanges();
@@ -245,8 +245,8 @@ namespace ViStart.UI
                 });
             }
 
-            var orbsMenu = new ToolStripMenuItem("Orbs");
-            orbsMenu.DropDownItems.Add("Default", null, (s, a) =>
+            var orbsMenu = new ToolStripMenuItem(LanguageManager.T("menu.orbs", "Orbs"));
+            orbsMenu.DropDownItems.Add(LanguageManager.T("menu.default", "Default"), null, (s, a) =>
             {
                 AppSettings.Instance.CurrentOrb = string.Empty;
                 ApplyAppearanceChanges();
@@ -263,8 +263,19 @@ namespace ViStart.UI
 
             menu.Items.Add(skinsMenu);
             menu.Items.Add(orbsMenu);
+            var languageMenu = new ToolStripMenuItem(LanguageManager.T("menu.languages", "Language"));
+            foreach (string lang in LanguageManager.GetAvailableLanguages())
+            {
+                languageMenu.DropDownItems.Add(lang, null, (s, a) =>
+                {
+                    AppSettings.Instance.CurrentLanguage = lang;
+                    ApplyLanguageChanges();
+                });
+            }
+
+            menu.Items.Add(languageMenu);
             menu.Items.Add(new ToolStripSeparator());
-            menu.Items.Add("Exit ViStart", null, (s, a) => Program.Exit());
+            menu.Items.Add(LanguageManager.T("menu.exit", "Exit ViStart"), null, (s, a) => Program.Exit());
             menu.Show(screenPoint);
         }
 
@@ -308,6 +319,13 @@ namespace ViStart.UI
             }
 
             return orbs.OrderBy(o => o);
+        }
+
+        private void ApplyLanguageChanges()
+        {
+            AppSettings.Save();
+            LanguageManager.Initialize();
+            ApplyAppearanceChanges();
         }
 
         private void ApplyAppearanceChanges()
