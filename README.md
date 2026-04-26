@@ -87,6 +87,9 @@ Each skin folder should contain:
 - `layout.xml` - Element positioning
 - Additional graphics as needed
 
+Right-click the ViStart orb to open a quick menu where you can switch the active skin and orb.
+Selected values are persisted in `settings.json`.
+
 
 ### Language Support
 Legacy language files can be distributed with releases (for compatibility with original assets),
