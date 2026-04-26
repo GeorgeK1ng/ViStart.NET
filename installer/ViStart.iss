@@ -15,7 +15,6 @@ OutputDir=..\artifacts\installer
 OutputBaseFilename=ViStart-Setup
 Compression=lzma
 SolidCompression=yes
-WizardStyle=classic
 ArchitecturesInstallIn64BitMode=x64
 
 [Languages]
