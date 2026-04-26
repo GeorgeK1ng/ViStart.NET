@@ -71,6 +71,9 @@ ViStart/
 Settings are stored in JSON format at:
 `%APPDATA%\Lee-Soft.com\ViStart\settings.json`
 
+Current JSON settings include values like `CurrentSkin`, `CurrentOrb`, keyboard hook options,
+and visual behavior flags (see `AppSettings.cs`).
+
 ### Theme Structure
 Themes are defined in `layout.xml` files that specify element positions, colors, and images.
 
@@ -83,6 +86,11 @@ Each skin folder should contain:
 - `start_button.png` - Start button/orb (4 vertical states)
 - `layout.xml` - Element positioning
 - Additional graphics as needed
+
+
+### Language Support
+Legacy language files can be distributed with releases (for compatibility with original assets),
+but runtime UI language switching is **not yet implemented** in this .NET rewrite.
 
 ## Building
 
