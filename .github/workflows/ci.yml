@@ -30,7 +30,6 @@ jobs:
         shell: powershell
         run: |
           choco install netfx-4.0.1-devpack -y --no-progress
-          choco install netfx-4.0.2-devpack -y --no-progress
 
       - name: Verify .NET Framework 4.0 reference assemblies
         shell: powershell
