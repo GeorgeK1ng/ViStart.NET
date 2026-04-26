@@ -26,18 +26,6 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Install legacy .NET 4.x targeting packs
-        shell: powershell
-        run: |
-          choco install netfx-4.0.1-devpack -y --no-progress
-
-      - name: Verify .NET Framework 4.0 reference assemblies
-        shell: powershell
-        run: |
-          $refPath = "${env:ProgramFiles(x86)}\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"
-          if (-not (Test-Path $refPath)) {
-            throw "Missing .NET Framework v4.0 reference assemblies at: $refPath"
-          }
 
       - name: Verify target framework (XP-compatible)
         shell: powershell
@@ -55,7 +43,7 @@ jobs:
           Write-Host "Building a C# .NET Framework 4.0 project does not require VS2010 C++ toolsets."
 
       - name: Build solution
-        run: msbuild ViStart.sln /t:Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /m /verbosity:minimal
+        run: msbuild ViStart.sln /t:Restore,Rebuild /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} /m /verbosity:minimal
 
       - name: Upload build output
         uses: actions/upload-artifact@v4
