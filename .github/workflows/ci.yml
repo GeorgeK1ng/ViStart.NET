@@ -181,15 +181,17 @@ jobs:
           & "C:\Program Files (x86)\Inno Setup 5\ISCC.exe" "/DMyAppPlatform=${{ matrix.platform }}" "installer/ViStart.iss"
 
       - name: Upload installer artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ViStart-Installer-${{ matrix.platform }}
           path: artifacts/installer/ViStart-Setup-${{ matrix.platform }}.exe
           if-no-files-found: error
+          archive: false
 
       - name: Upload portable artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ViStart-Portable-${{ matrix.platform }}
           path: artifacts/portable/ViStart-Portable-${{ matrix.platform }}.zip
           if-no-files-found: error
+          archive: false
