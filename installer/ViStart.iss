@@ -3,6 +3,9 @@
 #define MyAppVersion "0.1.0"
 #define MyAppPublisher "Lee-Soft.com"
 #define MyAppExeName "ViStart.exe"
+#ifndef MyAppPlatform
+  #define MyAppPlatform "x86"
+#endif
 
 [Setup]
 AppId={{D3C18EE0-D3E3-40E5-A934-E4CBB4E0D7E5}
@@ -12,10 +15,12 @@ AppPublisher={#MyAppPublisher}
 DefaultDirName={pf}\ViStart
 DefaultGroupName=ViStart
 OutputDir=..\artifacts\installer
-OutputBaseFilename=ViStart-Setup
+OutputBaseFilename=ViStart-Setup-{#MyAppPlatform}
 Compression=lzma
 SolidCompression=yes
+#if MyAppPlatform == "x64"
 ArchitecturesInstallIn64BitMode=x64
+#endif
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
