@@ -53,8 +53,8 @@ namespace ViStart.Core
         private AppSettings()
         {
             // Set defaults
-            CurrentSkin = string.Empty;
-            CurrentOrb = string.Empty;
+            CurrentSkin = "Windows 7 Start Menu";
+            CurrentOrb = "Orb Windows 7.png";
             CurrentLanguage = "english";
             ShowUserPicture = true;
             ShowProgramsFirst = false;
