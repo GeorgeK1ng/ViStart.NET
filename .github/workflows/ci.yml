@@ -84,21 +84,39 @@ jobs:
           $languagesRoot = "artifacts/dist/Languages"
           if (-not (Test-Path $languagesRoot)) { exit 0 }
 
+          $idMap = @{
+            strLogOff = "log_off"
+            strRestart = "restart"
+            strShutdown = "shut_down"
+            strAllPrograms = "all_programs"
+            strBack = "back"
+            strPinToStartMenu = "pin_to_start"
+            strUnpinToStartMenu = "unpin_from_start"
+            strRemoveFromList = "remove_from_list"
+            strDocuments = "documents"
+            strPictures = "pictures"
+            strMusic = "music"
+            strVideos = "videos"
+            strRecent = "recent"
+            strComputer = "computer"
+            strConnectTo = "connect_to"
+            strControlPanel = "control_panel"
+            strRun = "run"
+          }
+
           Get-ChildItem -Path $languagesRoot -Filter *.xml -Recurse | ForEach-Object {
             try {
               [xml]$xml = Get-Content $_.FullName
               $map = @{}
 
-              $xml.SelectNodes("//*[@id or @key or @name]") | ForEach-Object {
-                $k = $_.GetAttribute("id")
-                if ([string]::IsNullOrEmpty($k)) { $k = $_.GetAttribute("key") }
-                if ([string]::IsNullOrEmpty($k)) { $k = $_.GetAttribute("name") }
+              $xml.SelectNodes("/strings/string") | ForEach-Object {
+                $id = $_.GetAttribute("id")
+                $value = $_.GetAttribute("value")
+                if ([string]::IsNullOrEmpty($id) -or [string]::IsNullOrEmpty($value)) { return }
 
-                $v = $_.GetAttribute("value")
-                if ([string]::IsNullOrEmpty($v)) { $v = $_.InnerText }
-
-                if (-not [string]::IsNullOrEmpty($k) -and -not [string]::IsNullOrEmpty($v)) {
-                  $map[$k] = $v
+                if ($idMap.ContainsKey($id)) {
+                  $map[$idMap[$id]] = $value
+                  if ($id -eq "strShutdown") { $map["shutdown_text"] = $value }
                 }
               }
 
