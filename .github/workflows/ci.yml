@@ -56,6 +56,9 @@ jobs:
           Expand-Archive -Path $zip -DestinationPath artifacts -Force
           Copy-Item "artifacts/ViStart-main/Languages" "artifacts/dist/Languages" -Recurse -Force
           Copy-Item "artifacts/ViStart-main/Skins" "artifacts/dist/Skins" -Recurse -Force
+          if (Test-Path "artifacts/ViStart-main/Orbs") {
+            Copy-Item "artifacts/ViStart-main/Orbs" "artifacts/dist/Orbs" -Recurse -Force
+          }
 
       - name: Install Inno Setup 5
         if: matrix.make_installer == true
@@ -83,3 +86,4 @@ jobs:
             artifacts/installer/
             artifacts/dist/Languages/
             artifacts/dist/Skins/
+            artifacts/dist/Orbs/

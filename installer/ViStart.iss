@@ -28,6 +28,8 @@ Source: "..\artifacts\dist\app\*"; DestDir: "{app}"; Flags: recursesubdirs ignor
 Source: "..\artifacts\dist\Skins\*"; DestDir: "{userappdata}\Lee-Soft.com\ViStart\_skins"; Flags: recursesubdirs createallsubdirs ignoreversion
 ; Legacy language XML files
 Source: "..\artifacts\dist\Languages\*"; DestDir: "{app}\Languages"; Flags: recursesubdirs createallsubdirs ignoreversion
+; Legacy orbs from original VB6 repository
+Source: "..\artifacts\dist\Orbs\*"; DestDir: "{userappdata}\Lee-Soft.com\ViStart\_orbs"; Flags: recursesubdirs createallsubdirs ignoreversion skipifsourcedoesntexist
 
 [Icons]
 Name: "{group}\ViStart"; Filename: "{app}\{#MyAppExeName}"
