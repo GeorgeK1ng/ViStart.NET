@@ -101,7 +101,7 @@ Or open `ViStart.sln` in Visual Studio and build from the IDE.
 
 - **Minimum**: Windows 7
 - **Tested**: Windows 7, Windows 8.1, Windows 10, Windows 11
-- **Architecture**: x86 (can be built as AnyCPU)
+- **Architecture**: x86 and x64 build configurations are available (x86 recommended for widest XP-era compatibility)
 - **.NET**: Requires .NET Framework 4.0 Client Profile
 
 ## Migration from VB6 Version
